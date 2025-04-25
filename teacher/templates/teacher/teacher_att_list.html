@@ -1,0 +1,108 @@
+{% extends "base_teacher.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="heading">Attendance Records</h2>
+
+    {% if attendance_records %}
+        <div class="table-container">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                        <tr>
+                            <td>{{ record.student.full_name }}</td>
+                            <td>{{ record.class_grade }}</td>
+                            <td>{{ record.section }}</td>
+                            <td>{{ record.subject }}</td>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.time|time:"h:i A" }}</td>
+                            <td class="{% if record.status == 'present' %} present {% else %} absent {% endif %}">
+                                {{ record.status }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="no-records">No attendance records found.</p>
+    {% endif %}
+</div>
+
+<style>
+   /* Ensure sidebar does not overlap content */
+.sidebar {
+    width: 250px; /* Adjust width as needed */
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #222; /* Adjust to your theme */
+    overflow-y: auto;
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+/* Adjust the content area to prevent overlap */
+.container {
+    margin-left: 260px; /* Should be slightly more than sidebar width */
+    max-width: calc(100% - 260px);
+    padding: 20px;
+}
+
+/* Ensure table content is not hidden */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    table-layout: auto; /* Allows columns to adjust dynamically */
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevents text from breaking into new lines */
+}
+
+.styled-table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* Make sure text does not get hidden */
+.styled-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ensure responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        margin-left: 0; /* Full width on small screens */
+        max-width: 100%;
+    }
+
+    .sidebar {
+        width: 100px; /* Reduce sidebar width on small screens */
+    }
+
+    .styled-table th, .styled-table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+</style>
+{% endblock %}

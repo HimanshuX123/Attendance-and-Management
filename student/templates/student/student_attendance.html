@@ -1,0 +1,102 @@
+{% extends "base_s.html" %}
+
+{% block content %}
+<style>
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #fff;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+        transition: 0.3s;
+    }
+
+    /* Alternate row color */
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    /* No records found */
+    .no-records {
+        text-align: center;
+        font-style: italic;
+        color: #888;
+        padding: 20px;
+    }
+
+    /* Heading Styling */
+    h2 {
+        text-align: center;
+        font-size: 28px;
+        color: black;
+        margin-bottom: 20px;
+        animation: fadeInUp 0.8s ease-in-out;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<h2>My Attendance</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Subject</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in attendance_records %}
+        <tr>
+            <td>{{ record.date }}</td>
+            <td>{{ record.class_grade }}</td>
+            <td>{{ record.section }}</td>
+            <td>{{ record.subject }}</td>
+            <td>
+                {% if record.status == "Present" %}
+                    <span style="color: green; font-weight: bold;">✔ Present</span>
+                {% else %}
+                    <span style="color: red; font-weight: bold;">✖ Absent</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="no-records">No attendance records found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
